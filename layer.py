@@ -31,8 +31,8 @@ class Sequential:
 
 class WordEmbedding:
     def __init__(self, vocab_size, embedding_dim, init_wt=0.01, weight=None):
-        self.vocab_size = vocab_size  # 250
-        self.embedding_dim = embedding_dim # 16
+        self.vocab_size = vocab_size   
+        self.embedding_dim = embedding_dim  
         self.bias = torch.zeros(0)
         if weight is not None:
             self.weight = weight
@@ -43,7 +43,7 @@ class WordEmbedding:
         self.is_trainable = True
 
     def get_indicator_matrix(self, indices):
-        # turn label into matrix form
+ 
         batch_size = indices.size(0)
         self.indicator_matrix = torch.zeros(batch_size, self.vocab_size)
         for i in range(batch_size):
@@ -55,10 +55,10 @@ class WordEmbedding:
         output = torch.zeros(self.input.size(0), self.input.size(1) * self.embedding_dim)
         for i in range(self.input.size(1)):
             self.get_indicator_matrix(self.input[:, i].long())
-            # print('self.indicator_matrix', self.indicator_matrix)
+ 
             output[:, i * self.embedding_dim:(i + 1) * self.embedding_dim] = \
                 torch.mm(self.indicator_matrix, self.weight)
-        # print('output',output)
+ 
         return output
 
     def backward(self, grad_output):
